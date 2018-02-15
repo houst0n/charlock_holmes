@@ -25,20 +25,10 @@ dir_config 'icu'
 
 rubyopt = ENV.delete("RUBYOPT")
 
-icu4c = "/usr"
-# detect homebrew installs
-if !have_library 'icui18n'
-  base = if !`which brew`.empty?
-    `brew --cellar`.strip
-  elsif File.exists?("/usr/local/Cellar/icu4c")
-    '/usr/local/Cellar'
-  end
+icu4c = "/opt/local"
 
-  if base and icu4c = Dir[File.join(base, 'icu4c/*')].sort.last
-    $INCFLAGS << " -I#{icu4c}/include "
-    $LDFLAGS  << " -L#{icu4c}/lib "
-  end
-end
+$INCFLAGS << " -I#{icu4c}/include "
+$LDFLAGS  << " -L#{icu4c}/lib "
 
 unless have_library 'icui18n' and have_header 'unicode/ucnv.h'
   STDERR.puts "\n\n"
